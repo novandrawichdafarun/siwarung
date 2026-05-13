@@ -21,7 +21,6 @@ return new class extends Migration {
             $table->integer('stok_sebelum');
             $table->integer('stok_sesudah');
             $table->text('keterangan')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
