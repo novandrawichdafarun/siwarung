@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\WarungSetupController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,18 +21,23 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'warung.setup', 'owner'])->group(function () {
-    Route::get('/dasboard', [DashboardController::class, 'index'])
-        ->name('dasboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::resource('karyawan', KaryawanController::class)
         ->only(['index', 'create', 'store', 'destroy']);
 
     Route::get('/pengaturan', [PengaturanController::class, 'index'])
-        ->name('paengaturan.index');
+        ->name('pengaturan.index');
     Route::put('/pengaturan', [PengaturanController::class, 'update'])
         ->name('pengaturan.update');
 
-    // Route::resource('produk', ProdukController::class);
+    Route::resource('produk', ProdukController::class);
+    Route::post('produk/{produk}/stok', [ProdukController::class, 'tambahStok'])
+        ->name('produk.stok.tambah');
+    Route::resource('kategori', CategoryController::class)
+        ->only(['index', 'store', 'destroy']);
+
     // Route::resource('stok', StokController::class);
     // Route::get('/laporan', [LaporanController::class, 'index']);
 });
@@ -45,3 +52,4 @@ Route::middleware(['auth', 'warung.setup', 'kasir'])->group(function () {
     })->name('transaksi.riwayat');
 });
 
+require __DIR__ . '/auth.php';
