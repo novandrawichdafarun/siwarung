@@ -7,6 +7,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\WarungSetupController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +19,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('warung.setup');
     Route::post('/setup-warung', [WarungSetupController::class . 'store'])
         ->name('warung.setup.store');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth', 'warung.setup', 'owner'])->group(function () {
